@@ -1,13 +1,27 @@
 <%= turbo_stream_from @todo_list %>
 
-<main class="container">
-  <%= link_to "← Back to lists", todo_lists_path, class: "back-link" %>
+<p class="back-link"><%= link_to "← Back to lists", todo_lists_path %></p>
 
-  <header>
-    <h1><%= @todo_list.name %></h1>
-  </header>
+<div class="header-row">
+  <h1><%= @todo_list.name %></h1>
+  <div class="header-buttons">
+    <%= link_to "Edit", edit_todo_list_path(@todo_list), class: "btn-inline" %>
+    <%= button_to "Delete", todo_list_path(@todo_list), method: :delete,
+          class: "btn-inline danger",
+          form: { data: { turbo_confirm: "Delete this list and all its items?" } } %>
+  </div>
+</div>
 
-  <section class="todo-items">
-    <%= render partial: "items_page", locals: { items: @items, todo_list: @todo_list, cursor: 0 } %>
-  </section>
-</main>
+<div data-controller="new-item">
+  <%= form_with(model: [@todo_list, TodoListItem.new], class: "inline-form", data: { new_item_target: "form", action: "turbo:submit-end->new-item#reset" }) do |f| %>
+    <div class="inline-form-fields">
+      <%= f.text_field :title, placeholder: "Add a new item...", required: true, data: { new_item_target: "input" } %>
+      <%= f.text_field :description, placeholder: "Description (optional)" %>
+    </div>
+    <%= f.submit "Add" %>
+  <% end %>
+</div>
+
+<section id="todo_items" class="todo-items">
+  <%= render partial: "items_page", locals: { items: @items, todo_list: @todo_list, cursor: 0 } %>
+</section>

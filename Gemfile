@@ -25,6 +25,10 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# HTTP client for external API integration
+gem "faraday"
+gem "faraday-retry"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -67,6 +71,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "rspec"
+  gem "webmock"
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"

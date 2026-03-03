@@ -162,10 +162,18 @@ describe Api::TodoListItemsController do
         expect(response.status).to eq(204)
       end
 
-      it 'deletes the item' do
-        expect {
-          delete :destroy, params: { todo_list_id: todo_list.id, id: item.id }, format: :json
-        }.to change(TodoListItem, :count).by(-1)
+      it 'soft-deletes the item (sets deleted_at, keeps the record for sync tombstone)' do
+        delete :destroy, params: { todo_list_id: todo_list.id, id: item.id }, format: :json
+
+        # El registro sigue existiendo pero con deleted_at seteado
+        deleted = TodoListItem.unscoped.find(item.id)
+        expect(deleted.deleted_at).not_to be_nil
+      end
+
+      it 'hides the item from normal queries' do
+        delete :destroy, params: { todo_list_id: todo_list.id, id: item.id }, format: :json
+
+        expect(todo_list.todo_list_items.find_by(id: item.id)).to be_nil
       end
     end
 

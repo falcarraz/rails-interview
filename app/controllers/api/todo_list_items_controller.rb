@@ -34,8 +34,11 @@ module Api
     end
 
     # DELETE /api/todolists/:todo_list_id/items/:id
+    # Soft delete: marcamos deleted_at en lugar de borrar el registro.
+    # El sync service detecta estos tombstones y propaga el DELETE al remoto.
     def destroy
-      @todo_list_item.destroy
+      @todo_list_item.update!(deleted_at: Time.current)
+      TodoListItemBroadcastJob.perform_later(@todo_list_item)
 
       head :no_content
     end

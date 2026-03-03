@@ -1,0 +1,23 @@
+<p class="back-link"><%= link_to "← Back to list", @todo_list %></p>
+<h1>New Item</h1>
+
+<%= form_with(model: [@todo_list, @item]) do |f| %>
+  <% if @item.errors.any? %>
+    <article style="padding:.75rem 1rem;background:#fff3cd;color:#664d03;border:1px solid #ffc107;">
+      <% @item.errors.full_messages.each do |msg| %>
+        <p style="margin:0;"><%= msg %></p>
+      <% end %>
+    </article>
+  <% end %>
+
+  <%= f.label :title %>
+  <%= f.text_field :title, autofocus: true %>
+
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+
+  <div class="grid">
+    <%= f.submit "Add item" %>
+    <%= link_to "Cancel", @todo_list, role: "button", class: "secondary outline" %>
+  </div>
+<% end %>

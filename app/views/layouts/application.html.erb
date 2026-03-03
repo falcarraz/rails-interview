@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
   <head>
     <title>RailsInterview</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <main class="container">
+      <% if notice.present? %>
+        <article style="padding:.75rem 1rem;margin-bottom:1rem;background:#d1e7dd;color:#0f5132;border:1px solid #badbcc;">
+          <%= notice %>
+        </article>
+      <% end %>
+      <%= yield %>
+    </main>
   </body>
 </html>

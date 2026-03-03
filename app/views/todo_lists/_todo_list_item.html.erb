@@ -2,13 +2,21 @@
      class="todo-item <%= 'completed' if item.completed? %>"
      data-controller="todo-item"
      data-todo-item-url-value="<%= api_todo_list_todo_list_item_path(item.todo_list, item) %>">
-  <label class="todo-item-label">
-    <input type="checkbox"
-           data-todo-item-target="checkbox"
-           data-action="change->todo-item#toggle"
-           <%= "checked" if item.completed? %>>
-    <span class="todo-item-title"><%= item.title %></span>
-  </label>
+  <div class="todo-item-row">
+    <label class="todo-item-label">
+      <input type="checkbox"
+             data-todo-item-target="checkbox"
+             data-action="change->todo-item#toggle"
+             <%= "checked" if item.completed? %>>
+      <span class="todo-item-title"><%= item.title %></span>
+    </label>
+    <div class="todo-item-actions">
+      <%= link_to "Edit", edit_todo_list_todo_list_item_path(item.todo_list, item), class: "btn-inline", data: { turbo_frame: "_top" } %>
+      <%= button_to "Delete", todo_list_todo_list_item_path(item.todo_list, item), method: :delete,
+            class: "btn-inline danger",
+            form: { data: { turbo_confirm: "Delete this item?", turbo_frame: "_top" } } %>
+    </div>
+  </div>
   <% if item.description.present? %>
     <p class="todo-item-description"><%= item.description %></p>
   <% end %>

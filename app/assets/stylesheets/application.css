@@ -1,179 +1,104 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
  *= require_tree .
  *= require_self
  */
 
-:root {
-  --color-bg: #f8f9fa;
-  --color-surface: #ffffff;
-  --color-text: #212529;
-  --color-muted: #6c757d;
-  --color-border: #dee2e6;
-  --color-primary: #0d6efd;
-  --color-success: #198754;
+/* Tighten Pico defaults for a denser todo-app feel */
+:root { --pico-font-size: 93.75%; }
+h1 { --pico-typography-spacing-vertical: .5rem; }
+
+/* Header row with actions */
+.header-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.25rem;
 }
+.header-row h1 { margin-bottom: 0; }
+.header-row [role="button"] { padding: .5rem 1rem; font-size: .875rem; white-space: nowrap; }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-/* Links */
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.back-link {
-  display: inline-block;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--color-muted);
-}
-
-/* Headings */
-
-h1 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin: 0 0 1.5rem;
-}
-
-/* Todo lists index */
-
-.todo-lists {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
+/* List index */
+.todo-lists { list-style: none; padding: 0; margin: 0; }
 .todo-lists li {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
+  display: flex; align-items: center;
+  background: var(--pico-card-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  margin-bottom: .4rem;
+  padding: 0;
+  transition: box-shadow .15s ease;
 }
-
+.todo-lists li:hover { box-shadow: 0 1px 4px rgba(0,0,0,.06); }
 .todo-lists li a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  color: var(--color-text);
+  flex: 1; display: flex; align-items: center; gap: .5rem;
+  padding: .6rem .85rem;
+  color: var(--pico-color); text-decoration: none;
 }
-
-.todo-lists li a:hover {
-  background: var(--color-bg);
-  text-decoration: none;
-}
-
-.todo-list-name {
-  font-weight: 500;
-}
-
+.todo-lists li a:hover { text-decoration: none; }
 .todo-list-count {
-  font-size: 0.8rem;
-  color: var(--color-muted);
+  font-size: .75rem; color: var(--pico-muted-color);
+  background: var(--pico-muted-border-color);
+  padding: .1rem .45rem; border-radius: 10px;
 }
-
-/* Todo items list */
-
-.todo-items {
-  display: flex;
-  flex-direction: column;
+.todo-list-actions, .todo-item-actions, .header-buttons {
+  display: flex; gap: .3rem; align-items: center;
 }
+.todo-list-actions form, .todo-item-actions form, .header-buttons form {
+  margin: 0; padding: 0; display: inline; width: auto;
+}
+/* Override Pico's button defaults inside action containers */
+.todo-list-actions button,
+.todo-item-actions button,
+.header-buttons button {
+  margin: 0; width: auto; display: inline-block;
+}
+.todo-list-actions {
+  padding-right: .75rem;
+  opacity: 0; transition: opacity .15s ease;
+}
+.todo-lists li:hover .todo-list-actions { opacity: 1; }
 
+/* Todo items */
+.todo-items { display: flex; flex-direction: column; gap: .3rem; }
 .todo-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  padding: 0.625rem 0.75rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  margin-bottom: 0.375rem;
-  transition: opacity 0.2s ease;
+  display: flex; flex-direction: column; gap: .15rem;
+  padding: .5rem .75rem;
+  background: var(--pico-card-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  transition: opacity .2s ease, box-shadow .15s ease;
 }
+.todo-item:hover { box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.todo-item.completed { opacity: .45; }
+.todo-item.completed .todo-item-title { text-decoration: line-through; }
+.todo-item-row { display: flex; justify-content: space-between; align-items: center; }
+.todo-item-label { display: flex; align-items: center; gap: .5rem; cursor: pointer; margin-bottom: 0; }
+.todo-item-label input[type="checkbox"] { margin: 0; }
+.todo-item-description { margin: 0; padding-left: 1.625rem; font-size: .8rem; color: var(--pico-muted-color); }
+.todo-item-actions { opacity: 0; transition: opacity .15s ease; }
+.todo-item:hover .todo-item-actions { opacity: 1; }
 
-.todo-item.completed {
-  opacity: 0.5;
+/* Inline add-item form */
+.inline-form { display: flex; gap: .5rem; align-items: flex-end; margin-bottom: 1.25rem; }
+.inline-form-fields { flex: 1; display: flex; gap: .5rem; }
+.inline-form-fields input { margin-bottom: 0; }
+.inline-form [type="submit"] { margin-bottom: 0; width: auto; white-space: nowrap; }
+
+/* Small inline buttons — override Pico button defaults */
+button.btn-inline,
+a.btn-inline,
+.btn-inline {
+  --pico-font-weight: 400;
+  font-size: .7rem; padding: .15rem .45rem; line-height: 1.4;
+  border-radius: var(--pico-border-radius);
+  cursor: pointer; border: 1px solid var(--pico-muted-border-color);
+  background: transparent; color: var(--pico-muted-color);
+  text-decoration: none; display: inline-block;
+  width: auto; margin: 0; box-shadow: none;
 }
+.btn-inline:hover { background: var(--pico-muted-border-color); text-decoration: none; color: var(--pico-color); }
+.btn-inline.danger { color: var(--pico-del-color); border-color: var(--pico-del-color); }
+.btn-inline.danger:hover { background: var(--pico-del-color); color: #fff; }
 
-.todo-item.completed .todo-item-title {
-  text-decoration: line-through;
-}
-
-.todo-item-label {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  cursor: pointer;
-}
-
-.todo-item-label input[type="checkbox"] {
-  width: 1.125rem;
-  height: 1.125rem;
-  flex-shrink: 0;
-  accent-color: var(--color-success);
-  cursor: pointer;
-}
-
-.todo-item-title {
-  font-size: 0.9375rem;
-}
-
-.todo-item-description {
-  margin: 0;
-  padding-left: 1.75rem;
-  font-size: 0.8125rem;
-  color: var(--color-muted);
-}
-
-/* Loading indicator */
-
-.loading-indicator {
-  text-align: center;
-  color: var(--color-muted);
-  font-size: 0.875rem;
-  padding: 1rem 0;
-}
-
-/* Empty state */
-
-.empty-state {
-  text-align: center;
-  color: var(--color-muted);
-  padding: 3rem 1rem;
-}
+/* Misc */
+.back-link { font-size: .85rem; display: inline-block; margin-bottom: .25rem; }
+.loading-indicator { text-align: center; color: var(--pico-muted-color); padding: 1rem 0; font-size: .85rem; }
+.empty-state { text-align: center; color: var(--pico-muted-color); padding: 2.5rem 1rem; }
