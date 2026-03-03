@@ -1,0 +1,13 @@
+<%= turbo_stream_from @todo_list %>
+
+<main class="container">
+  <%= link_to "← Back to lists", todo_lists_path, class: "back-link" %>
+
+  <header>
+    <h1><%= @todo_list.name %></h1>
+  </header>
+
+  <section class="todo-items">
+    <%= render partial: "items_page", locals: { items: @items, todo_list: @todo_list, cursor: 0 } %>
+  </section>
+</main>

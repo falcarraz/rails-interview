@@ -1,0 +1,15 @@
+<div id="<%= dom_id(item) %>"
+     class="todo-item <%= 'completed' if item.completed? %>"
+     data-controller="todo-item"
+     data-todo-item-url-value="<%= api_todo_list_todo_list_item_path(item.todo_list, item) %>">
+  <label class="todo-item-label">
+    <input type="checkbox"
+           data-todo-item-target="checkbox"
+           data-action="change->todo-item#toggle"
+           <%= "checked" if item.completed? %>>
+    <span class="todo-item-title"><%= item.title %></span>
+  </label>
+  <% if item.description.present? %>
+    <p class="todo-item-description"><%= item.description %></p>
+  <% end %>
+</div>

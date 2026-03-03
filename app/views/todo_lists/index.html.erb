@@ -1,9 +1,20 @@
-<%= link_to 'Add Todo List', new_todo_list_path %>
+<main class="container">
+  <header>
+    <h1>Todo Lists</h1>
+  </header>
 
-<div>
-  <% @todo_lists.each do |todo_list| %>
-    <div>
-      #<%= todo_list.id %> | <%= todo_list.name %>
-    </div>
+  <% if @todo_lists.any? %>
+    <ul class="todo-lists">
+      <% @todo_lists.each do |todo_list| %>
+        <li>
+          <%= link_to todo_list_path(todo_list) do %>
+            <span class="todo-list-name"><%= todo_list.name %></span>
+            <span class="todo-list-count"><%= pluralize(todo_list.items_count, "item") %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="empty-state">No todo lists yet.</p>
   <% end %>
-</div>
+</main>

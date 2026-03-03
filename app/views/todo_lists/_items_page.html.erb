@@ -1,0 +1,9 @@
+<turbo-frame id="items_page_<%= cursor %>">
+  <%= render partial: "todo_list_item", collection: items, as: :item %>
+
+  <% if items.size == TodoListsController::ITEMS_PER_PAGE %>
+    <turbo-frame id="items_page_<%= items.last.id %>" src="<%= todo_list_path(todo_list, after: items.last.id) %>" loading="lazy">
+      <p class="loading-indicator">Loading more items…</p>
+    </turbo-frame>
+  <% end %>
+</turbo-frame>
